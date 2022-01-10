@@ -30,9 +30,9 @@
 		
 		5. Ajouter l'icone du bureau à distance sur le bureau
 		
-		5. Placer le fond d'écran Sicorfé
+		6. Placer le fond d'écran Sicorfé
 		
-		5. Renommer l'ordinateur
+		7. Renommer l'ordinateur
 #>
 
 #Exécution du script en tant qu'administrateur
@@ -105,11 +105,6 @@ do
 		winget install -e --id 7zip.7zip | Out-Host
 		if($?) { Write-Host "7-Zip Installed" -ForegroundColor Green }
 		
-		#Installation FortiClientVPN
-		Write-Host "Installing FortiClientVPN" -ForegroundColor Yellow
-		winget install -e --id Fortinet.FortiClientVPN | Out-Host
-		if($?) { Write-Host "FortiClientVPN Installed" -ForegroundColor Green }
-		
 		#Installation TeamViewer
 		Write-Host "Installing TeamViewer" -ForegroundColor Yellow
 		winget install -e --id TeamViewer.TeamViewer | Out-Host
@@ -119,6 +114,32 @@ do
 		Write-Host "Installing Adobe Acrobat Reader" -ForegroundColor Yellow
 		winget install -e --id Adobe.Acrobat.Reader.64-bit | Out-Host
 		if($?) { Write-Host "Adobe Acrobat Reader Installed" -ForegroundColor Green }
+		
+		##Installation FortiClientVPN
+		##Installation manuelle à cause de l'impossibilité de mettre à jour le paquet
+		$url = "https://filestore.fortinet.com/forticlient/downloads/FortiClientVPNSetup_7.0.1.0083_x64.zip.zip"
+		} else {
+		$url = "https://filestore.fortinet.com/forticlient/downloads/FortiClientVPNSetup_7.0.1.0083.zip"
+		}
+
+		##Variables
+		$path = $env:TEMP
+		$zip = $path + "\FortiClientVPN.zip"
+		$msi = $path + "\FortiClientVPN.msi"
+
+
+		Write-Host "Downloading FortiClientVPN ..."
+		Invoke-WebRequest $url -OutFile $zip
+
+
+		Write-Host "Extracting files from the zip file ..."
+		Expand-Archive -LiteralPath $zip -DestinationPath $path
+
+
+		Write-Host "Installing FortiClientVPN"
+		MsiExec.exe /i $msi REBOOT=ReallySuppress /qn
+
+		Write-Host "FortiClientVPN Installed" -ForegroundColor Green
 		
     } '2' {
 		
