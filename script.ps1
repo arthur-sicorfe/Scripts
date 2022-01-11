@@ -116,28 +116,27 @@ do
 		if($?) { Write-Host "Adobe Acrobat Reader Installed" -ForegroundColor Green }
 		
 		##Installation FortiClientVPN
-		##Installation manuelle à cause de l'impossibilité de mettre à jour le paquet
+		## 32 ou 64 bits
+		if ([Environment]::Is64BitOperatingSystem)
+		{
 		$url = "https://filestore.fortinet.com/forticlient/downloads/FortiClientVPNSetup_7.0.1.0083_x64.zip.zip"
 		} else {
 		$url = "https://filestore.fortinet.com/forticlient/downloads/FortiClientVPNSetup_7.0.1.0083.zip"
 		}
 
 		##Variables
-		$path = $env:TEMP
+		$path = "$HOME\Downloads"
 		$zip = $path + "\FortiClientVPN.zip"
 		$msi = $path + "\FortiClientVPN.msi"
-
 
 		Write-Host "Downloading FortiClientVPN ..."
 		Invoke-WebRequest $url -OutFile $zip
 
-
 		Write-Host "Extracting files from the zip file ..."
 		Expand-Archive -LiteralPath $zip -DestinationPath $path
 
-
 		Write-Host "Installing FortiClientVPN"
-		MsiExec.exe /i $msi REBOOT=ReallySuppress /qn
+		Start-Process msiexec.exe -Wait -ArgumentList "/i $msi REBOOT=ReallySuppress /qn"
 
 		Write-Host "FortiClientVPN Installed" -ForegroundColor Green
 		
