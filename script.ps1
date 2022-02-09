@@ -11,7 +11,7 @@
 		ATTENTION :
 		
 		Activer l'exécution de script PowerShell avant d'éxécuter le script.
-		Dans PowerShell en Administrateur : Set-ExecutionPolicy RemoteSigned
+		Dans PowerShell en Administrateur : Set-ExecutionPolicy Unrestricted
 		
 		Ce script permet en autre de :
 
@@ -236,7 +236,7 @@ do
 		## Activation verouillage numérique ##
 		#####################################
 		
-		Set-ItemProperty -Path 'Registry::HKCU\.DEFAULT\Control Panel\Keyboard' -Name "InitialKeyboardIndicators" -Value "2"
+		Set-ItemProperty -Path 'Registry::HKEY_USERS\.DEFAULT\Control Panel\Keyboard' -Name "InitialKeyboardIndicators" -Value "2"
 		
 		Write-Host "Done"
 		
